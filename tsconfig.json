@@ -1,16 +1,7 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "types": ["node"]
-  },
-  "include": [
-    "vite.config.ts", 
-    "playwright.config.ts",
-    ".eslintrc.cjs"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
