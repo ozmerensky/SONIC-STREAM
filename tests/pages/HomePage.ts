@@ -19,4 +19,9 @@ export class HomePage {
   async goto() {
     await this.page.goto('/');
   }
+  
+  async playTrackByIndex(index: number) {
+    const card = this.trackCards.nth(index);
+    await card.getByRole('button').click();
+  }
 }

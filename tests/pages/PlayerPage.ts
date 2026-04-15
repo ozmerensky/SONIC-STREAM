@@ -13,8 +13,8 @@ export class PlayerPage {
     this.page = page;
     this.playerBar = page.getByTestId('player-bar');
     this.playButton = this.playerBar.getByTestId('main-play-btn');
-    this.trackTitle = this.playerBar.locator('div').filter({ hasText: "Tears Don't Fall" }).first();
-    this.artistName = this.playerBar.locator('div').filter({ hasText: "Bullet For My Valentine" }).first();
+    this.trackTitle = this.playerBar.locator('div[class*="title"]'); 
+    this.artistName = this.playerBar.locator('div[class*="artist"]');
     
     this.progressSeekBar = this.playerBar.getByLabel('Music progress');
     this.volumeSeekBar = this.playerBar.getByLabel('Volume control');
