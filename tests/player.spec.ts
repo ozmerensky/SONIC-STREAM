@@ -15,9 +15,7 @@ test.describe('Player Bar Interactions', () => {
   });
 
   test('should update seekbar value when dragged', async () => {
-    // נשנה את הערך ל-75%
     await player.setProgress('75');
-    // נוודא שהערך באמת התעדכן ב-DOM
     await expect(player.progressSeekBar).toHaveValue('75');
   });
 
