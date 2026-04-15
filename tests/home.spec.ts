@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from './pages/Home';
+import { HomePage } from './pages/HomePage';
 
 test.describe('Initial Infrastructure Check', () => {
   
   test('should load the home page and display the title', async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.goto();
-    
+
     await expect(homePage.pageTitle).toBeVisible();
   });
 
