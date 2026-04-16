@@ -1,0 +1,40 @@
+.skeletonCard {
+  background-color: #181818;
+  padding: 16px;
+  border-radius: 8px;
+  width: 200px;
+}
+
+.skeletonImage, .skeletonTitle, .skeletonArtist {
+  background: linear-gradient(
+    90deg,
+    #282828 25%,
+    #333333 50%,
+    #282828 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 16px;
+}
+
+.skeletonTitle {
+  height: 16px;
+  width: 80%;
+  margin-bottom: 8px;
+}
+
+.skeletonArtist {
+  height: 12px;
+  width: 50%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

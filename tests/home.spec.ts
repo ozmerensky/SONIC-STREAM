@@ -14,6 +14,8 @@ test.describe('Initial Infrastructure Check', () => {
     const homePage = new HomePage(page);
     await homePage.goto();
 
+    await homePage.waitForLoadingToFinish();
+
     await expect(homePage.trackCards).toHaveCount(3);
   });
 });
