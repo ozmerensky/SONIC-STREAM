@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { SeekBar } from '../SeekBar/SeekBar';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAudio } from '../../hooks/useAudio';
 import styles from './Player.module.css';
 
 export const Player: React.FC = () => {
   const { currentTrack, isPlaying, togglePlay } = usePlayer();
+  const { progress, audioRef } = useAudio();
   const [volume, setVolume] = useState(50);
-  const [progress, setProgress] = useState(0);
+  const handleVolumeChange = (val: number) => {
+    setVolume(val);
+    if (audioRef.current) {
+      audioRef.current.volume = val / 100;
+    }
+  };
+
+  const handleSeek = (val: number) => {
+    if (audioRef.current && audioRef.current.duration) {
+      audioRef.current.currentTime = (val / 100) * audioRef.current.duration;
+    }
+  };
 
   return (
     <footer className={styles.playerBar} data-testid="player-bar">
@@ -51,7 +64,7 @@ export const Player: React.FC = () => {
         
         <div className={styles.progressBar}>
           <span className={styles.time}>0:00</span>
-          <SeekBar value={progress} max={100} onChange={setProgress} label="Music progress" />
+          <SeekBar value={progress} max={100} onChange={handleSeek} label="Music progress" />
           <span className={styles.time}>{currentTrack?.duration || "0:00"}</span>
         </div>
       </div>
@@ -59,7 +72,7 @@ export const Player: React.FC = () => {
       <div className={styles.volumeContainer}>
         <span className={styles.volumeIcon}>🔊</span>
         <div className={styles.volumeSlider}>
-          <SeekBar value={volume} max={100} onChange={setVolume} label="Volume control" />
+          <SeekBar value={volume} max={100} onChange={handleVolumeChange} label="Volume control" />
         </div>
       </div>
     </footer>
