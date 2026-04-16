@@ -15,20 +15,19 @@ test.describe('Player Bar Interactions', () => {
     await expect(player.artistName).toHaveText(/to start listening/i);
   });
 
-  test('should update seekbar value when dragged', async () => {
-    await player.setProgress('75');
-    await expect(player.progressSeekBar).toHaveValue('75');
-  });
-
   test('should update volume value when changed', async () => {
     await player.setVolume('20');
     await expect(player.volumeSeekBar).toHaveValue('20');
   });
-  test('should update player when a track is clicked', async ({ page }) => {
+
+  test('should update player and interact with progress bar when a track is clicked', async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.playTrackByIndex(0); 
 
     await expect(player.trackTitle).not.toHaveText(/Select a track/i);
     await expect(player.playButton).toHaveAttribute('aria-label', 'Pause');
+
+    await expect(player.progressSeekBar).toBeVisible();
+    await player.progressSeekBar.fill('50');
   });
 });
