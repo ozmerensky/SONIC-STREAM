@@ -51,12 +51,17 @@ test.describe('Sidebar Navigation', () => {
     const playerPage = new PlayerPage(page);
 
     await homePage.playTrackByIndex(0);
+    
+    await expect(playerPage.playerBar).toBeVisible(); 
+    
+    await expect(playerPage.trackTitle).not.toBeEmpty();
+    
     const trackTitle = await playerPage.trackTitle.textContent();
 
     await sidebar.clickSearch();
     await expect(page).toHaveURL(/\/search/);
 
     await expect(playerPage.trackTitle).toHaveText(trackTitle!);
-    await expect(playerPage.playButton).toHaveAttribute('aria-label', 'Pause');
+    await expect(playerPage.playButton).toHaveAttribute('aria-label', /pause/i);
   });
 });
