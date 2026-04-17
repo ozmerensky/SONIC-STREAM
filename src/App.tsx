@@ -5,6 +5,7 @@ import { PlayerProvider } from './context/PlayerContext';
 import { Home } from './pages/Home/Home';
 import './App.css';
 import { Search } from './pages/Search/Search';
+import { Library } from './pages/Library/Library';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/library" element={<Library />} />
           </Routes>
         </div>
 

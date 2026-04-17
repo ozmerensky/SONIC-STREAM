@@ -29,7 +29,11 @@ export class HomePage {
   async playTrackByIndex(index: number) {
     await this.waitForLoadingToFinish();
     const card = this.trackCards.nth(index);
-    await card.getByRole('button').click();
+    await card.getByRole('button', { name: /play/i }).click();
   }
 
+  async toggleLikeOnTrack(index: number) {
+    const card = this.trackCards.nth(index);
+    await card.getByRole('button', { name: /liked/i }).click();
+  }
 }
