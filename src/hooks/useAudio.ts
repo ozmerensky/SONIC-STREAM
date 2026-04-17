@@ -8,18 +8,24 @@ export const useAudio = () => {
 
   useEffect(() => {
     const audio = audioRef.current;
+
     const updateProgress = () => {
       if (audio.duration) {
-        setProgress((audio.currentTime / audio.duration) * 100);
+        const currentProgress = (audio.currentTime / audio.duration) * 100;
+        setProgress(currentProgress);
       }
     };
 
     audio.addEventListener('timeupdate', updateProgress);
-    
+    audio.addEventListener('loadedmetadata', () => {
+    });
+
     if (currentTrack?.audioUrl) {
-      audio.src = currentTrack.audioUrl;
-      if (isPlaying) {
-        audio.play().catch(err => console.error("Playback failed:", err));
+      const targetSrc = currentTrack.audioUrl; 
+
+      if (audio.src !== window.location.origin + targetSrc) {
+        audio.src = targetSrc;
+        audio.load();
       }
     }
 
@@ -29,12 +35,28 @@ export const useAudio = () => {
   }, [currentTrack]);
 
   useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying]);
-  
+    const audio = audioRef.current;
+
+    const handlePlay = async () => {
+      if (isPlaying && currentTrack) {
+        try {
+          if (audio.readyState >= 2) {
+            await audio.play();
+          } else {
+            audio.addEventListener('canplay', () => audio.play(), { once: true });
+          }
+        } catch (err: any) {
+          if (err.name !== 'AbortError' && err.name !== 'NotSupportedError') {
+            console.error("Playback error:", err);
+          }
+        }
+      } else {
+        audio.pause();
+      }
+    };
+
+    handlePlay();
+  }, [isPlaying, currentTrack]);
+
   return { audioRef, progress };
 };
