@@ -42,15 +42,3 @@
   width: 100%;
   max-width: 600px;
 }
-
-.trackGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 32px;
-}
-
-.empty {
-  color: #b3b3b3;
-  font-size: 1rem;
-  margin-top: 40px;
-}

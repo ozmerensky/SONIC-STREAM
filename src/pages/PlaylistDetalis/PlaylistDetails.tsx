@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { usePlayer } from '../../context/PlayerContext';
 import { trackService } from '../../services/trackService';
 import { Track } from '../../types/track';
-import { TrackCard } from '../../components/TrackCard/TrackCard';
 import { useEffect, useState } from 'react';
 import styles from './PlaylistDetails.module.css';
+import { TrackGrid } from '../../components/TrackGrid/TrackGrid';
 
 export const PlaylistDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,15 +53,11 @@ export const PlaylistDetails = () => {
         )}
       </div>
 
-      <div className={styles.trackGrid}>
-        {playlistTracks.length > 0 ? (
-          playlistTracks.map(track => <TrackCard key={track.id} track={track} />)
-        ) : (
-          <div className={styles.emptyState}>
-            <p>No tracks in this playlist yet. Go find some music!</p>
-          </div>
-        )}
-      </div>
+      <TrackGrid 
+        tracks={playlistTracks} 
+        isLoading={false}
+        emptyMessage="No tracks in this playlist yet. Go find some music!" 
+      />
     </div>
   );
 };
