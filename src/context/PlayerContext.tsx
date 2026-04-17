@@ -13,8 +13,8 @@ interface PlayerContextType {
   createPlaylist: (name: string) => void;
   addTrackToPlaylist: (playlistId: string, trackId: string) => void;
   updatePlaylistName: (playlistId: string, newName: string) => void; 
+  deletePlaylist: (playlistId: string) => void; // הווספנו לכאן
 }
-
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
@@ -67,16 +67,22 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         : pl
     ));
   };
+
   const updatePlaylistName = (playlistId: string, newName: string) => {
     setPlaylists(prev => prev.map(pl => 
       pl.id === playlistId ? { ...pl, name: newName } : pl
     ));
   };
 
+  const deletePlaylist = (playlistId: string) => {
+    setPlaylists(prev => prev.filter(pl => pl.id !== playlistId));
+  };
+
   return (
     <PlayerContext.Provider value={{ 
       currentTrack, isPlaying, likedTrackIds, playlists, 
-      setCurrentTrack, togglePlay, toggleLike, createPlaylist, addTrackToPlaylist, updatePlaylistName 
+      setCurrentTrack, togglePlay, toggleLike, createPlaylist, addTrackToPlaylist, updatePlaylistName,
+      deletePlaylist
     }}>
       {children}
     </PlayerContext.Provider>
