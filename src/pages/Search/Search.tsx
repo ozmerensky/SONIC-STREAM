@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { trackService } from '../../services/trackService';
 import { Track } from '../../types/track';
-import { TrackCard } from '../../components/TrackCard/TrackCard';
-import { TrackCardSkeleton } from '../../components/TrackCard/TrackCardSkeleton';
+import { TrackGrid } from '../../components/TrackGrid/TrackGrid'; // ייבוא חדש
 import styles from './Search.module.css';
 
 export const Search = () => {
@@ -40,15 +39,11 @@ export const Search = () => {
         />
       </div>
 
-      <div className={styles.trackGrid}>
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, n) => <TrackCardSkeleton key={n} />)
-        ) : filteredTracks.length > 0 ? (
-          filteredTracks.map((track) => <TrackCard key={track.id} track={track} />)
-        ) : (
-          <p className={styles.noResults}>No tracks found for "{searchTerm}"</p>
-        )}
-      </div>
+      <TrackGrid 
+        tracks={filteredTracks} 
+        isLoading={isLoading} 
+        emptyMessage={`No tracks found for "${searchTerm}"`} 
+      />
     </div>
   );
 };
