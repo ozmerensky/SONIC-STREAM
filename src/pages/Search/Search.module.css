@@ -1,0 +1,39 @@
+.searchContainer {
+  padding: 32px;
+}
+
+.searchHeader {
+  margin-bottom: 32px;
+  position: sticky;
+  top: 0;
+  background-color: #121212;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 48px;
+  border-radius: 500px;
+  border: none;
+  background-color: #242424;
+  color: white;
+  font-size: 14px;
+}
+
+.searchInput:focus {
+  outline: 2px solid white;
+  background-color: #2a2a2a;
+}
+
+.trackGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 32px;
+}
+
+.noResults {
+  color: #b3b3b3;
+  margin-top: 40px;
+}
