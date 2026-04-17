@@ -19,7 +19,7 @@ test.describe('Playlist Flow', () => {
     await homePage.waitForLoadingToFinish();
 
     await sidebar.createPlaylistBtn.click();
-    const playlistLink = page.getByText('My Playlist #1');
+    const playlistLink = page.getByRole('link', { name: 'My Playlist #1', exact: true });
     await expect(playlistLink).toBeVisible();
 
     await homePage.trackCards.first().getByRole('button', { name: /add to playlist/i }).click();
@@ -41,7 +41,9 @@ test.describe('Playlist Flow', () => {
     
     await sidebar.createPlaylistBtn.click();
     const playlistName = 'My Playlist #1';
-    await page.getByText(playlistName).click();
+    
+    const playlistLink = page.getByRole('link', { name: playlistName, exact: true });
+    await playlistLink.click();
 
     page.on('dialog', dialog => dialog.accept());
 
