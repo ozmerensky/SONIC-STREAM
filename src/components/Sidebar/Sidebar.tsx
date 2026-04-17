@@ -11,9 +11,9 @@ export const Sidebar: React.FC = () => {
       </div>
       
       <nav className={styles.navGroup}>
-        <NavItem label="Home" icon="🏠" isActive />
-        <NavItem label="Search" icon="🔍" />
-        <NavItem label="Your Library" icon="📚" />
+        <NavItem label="Home" icon="🏠" to="/" />
+        <NavItem label="Search" icon="🔍" to="/search" />
+        <NavItem label="Your Library" icon="📚" to="/library" />
       </nav>
 
       <div className={styles.playlistSection}>
