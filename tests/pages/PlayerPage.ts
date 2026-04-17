@@ -12,12 +12,11 @@ export class PlayerPage {
   constructor(page: Page) {
     this.page = page;
     this.playerBar = page.getByTestId('player-bar');
+    this.trackTitle = this.playerBar.locator('[class*="title"]').first(); 
+    this.artistName = this.playerBar.locator('[class*="artist"]').first();
     this.playButton = this.playerBar.getByTestId('main-play-btn');
-    this.trackTitle = this.playerBar.locator('div[class*="title"]'); 
-    this.artistName = this.playerBar.locator('div[class*="artist"]');
-    
-    this.progressSeekBar = this.playerBar.getByLabel('Music progress');
-    this.volumeSeekBar = this.playerBar.getByLabel('Volume control');
+    this.progressSeekBar = this.playerBar.getByLabel(/Music progress/i);
+    this.volumeSeekBar = this.playerBar.getByLabel(/Volume control/i);
   }
 
   async setProgress(value: string) {

@@ -51,6 +51,29 @@
   padding-top: 24px;
 }
 
+.playlistList {
+  list-style: none;
+  padding: 0;
+  margin-top: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.playlistItem {
+  color: #b3b3b3;
+  padding: 8px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlistItem:hover {
+  color: #fff;
+}
+
 .sectionTitle {
   color: #b3b3b3;
   font-size: 12px;

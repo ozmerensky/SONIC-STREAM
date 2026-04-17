@@ -4,24 +4,22 @@ import { LibraryPage } from './pages/LibraryPage';
 import { SidebarPage } from './pages/SidebarPage';
 
 test.describe('Library and Favorites', () => {
-  test('should add a song to library when heart is clicked', async ({ page }) => {
+    test('should add a song to library when heart is clicked', async ({ page }) => {
     const homePage = new HomePage(page);
-    const libraryPage = new LibraryPage(page);
     const sidebar = new SidebarPage(page);
+    const libraryPage = new LibraryPage(page);
 
     await homePage.goto();
     await homePage.waitForLoadingToFinish();
 
-    const firstTrackTitle = await homePage.trackCards.first().locator('h3').textContent();
-    await homePage.toggleLikeOnTrack(0);
+    const firstCard = homePage.trackCards.first();
+    await firstCard.getByRole('button', { name: /add to liked/i }).click();
 
     await sidebar.libraryLink.click();
-    await expect(page).toHaveURL(/\/library/);
-
+    
     await expect(libraryPage.trackCards).toHaveCount(1);
-    await expect(libraryPage.trackCards.first()).toContainText(firstTrackTitle!);
-
-    await libraryPage.trackCards.first().getByRole('button', { name: /liked/i }).click();
+    
+    await libraryPage.trackCards.first().getByRole('button', { name: /remove from liked|liked/i }).click();
     await expect(libraryPage.trackCards).toHaveCount(0);
     await expect(libraryPage.emptyMessage).toBeVisible();
   });

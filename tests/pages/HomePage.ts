@@ -13,7 +13,7 @@ export class HomePage {
     this.mainContent = page.getByTestId('main-content');
     
     this.pageTitle = this.mainContent.getByRole('heading', { name: 'Sonic Stream' });
-    this.trackGrid = this.mainContent.locator('.trackGrid');
+    this.trackGrid = this.mainContent.locator('[class*="trackGrid"]');
     this.trackCards = this.mainContent.getByTestId('track-card');
     this.skeletons = page.locator('[class*="skeletonCard"]');
   }
@@ -23,17 +23,17 @@ export class HomePage {
   }
 
   async waitForLoadingToFinish() {
-    await this.trackCards.first().waitFor({ state: 'visible', timeout: 10000 });
+    await this.page.waitForSelector('[data-testid="track-card"]');
   }
 
   async playTrackByIndex(index: number) {
-    await this.waitForLoadingToFinish();
     const card = this.trackCards.nth(index);
-    await card.getByRole('button', { name: /play/i }).click();
+    await card.getByRole('button', { name: /play/i }).first().click();
   }
 
   async toggleLikeOnTrack(index: number) {
     const card = this.trackCards.nth(index);
+    await card.waitFor({ state: 'visible' });
     await card.getByRole('button', { name: /liked/i }).click();
   }
 }

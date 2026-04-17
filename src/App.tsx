@@ -1,17 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { Player } from './components/Player/Player';
-import { PlayerProvider } from './context/PlayerContext';
+import { PlayerProvider, usePlayer } from './context/PlayerContext';
 import { Home } from './pages/Home/Home';
-import './App.css';
 import { Search } from './pages/Search/Search';
 import { Library } from './pages/Library/Library';
+import './App.css';
+import { PlaylistDetails } from './pages/PlaylistDetalis/PlaylistDetails';
 
-function App() {
+const AppContent = () => {
+  const { currentTrack } = usePlayer();
   return (
-    <PlayerProvider>
-      <Router>
-        <div className="appContainer">
+    <Router>
+      <div className="appContainer">
         <Sidebar />
         
         <div className="mainLayout">
@@ -19,12 +20,19 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/playlist/:id" element={<PlaylistDetails />} />
           </Routes>
         </div>
-
-        <Player />
+        {currentTrack && <Player />}
       </div>
-      </Router>
+    </Router>
+  );
+};
+
+function App() {
+  return (
+    <PlayerProvider>
+      <AppContent />
     </PlayerProvider>
   );
 }
