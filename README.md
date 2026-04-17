@@ -89,6 +89,9 @@ GitHub Actions validate every change with automated tests. The pipeline ensures:
 - `src/pages/` — route-driven page components
 - `tests/` — Playwright end-to-end test definitions
 
+## AI Workflow Detail:
+Utilized AI to optimize React 19 concurrent features and audio lifecycle management, while using Playwright's AI-assisted selectors to ensure resilient E2E tests. The AI helped identify potential edge cases in audio state transitions and UI interactions, leading to a more robust implementation and test suite. 
+
 ## Notes
 
 - Built with TypeScript for stronger contract safety
