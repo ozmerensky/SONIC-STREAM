@@ -7,13 +7,16 @@ interface PlayerContextType {
   isPlaying: boolean;
   likedTrackIds: string[];
   playlists: Playlist[];
+  toastMessage: string | null;
   setCurrentTrack: (track: Track) => void;
   togglePlay: () => void;
   toggleLike: (trackId: string) => void;
   createPlaylist: (name: string) => void;
   addTrackToPlaylist: (playlistId: string, trackId: string) => void;
   updatePlaylistName: (playlistId: string, newName: string) => void; 
-  deletePlaylist: (playlistId: string) => void; // הווספנו לכאן
+  deletePlaylist: (playlistId: string) => void;
+  showToast: (message: string) => void;
+  hideToast: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -21,7 +24,8 @@ const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentTrack, setCurrentTrackState] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   const [likedTrackIds, setLikedTrackIds] = useState<string[]>(() => {
     const saved = localStorage.getItem('likedTracks');
     return saved ? JSON.parse(saved) : [];
@@ -40,6 +44,12 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     localStorage.setItem('playlists', JSON.stringify(playlists));
   }, [playlists]);
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+  const hideToast = () => setToastMessage(null);
+  
   const setCurrentTrack = (track: Track) => {
     setCurrentTrackState(track);
     setIsPlaying(true);
@@ -48,7 +58,9 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const togglePlay = () => setIsPlaying((prev) => !prev);
 
   const toggleLike = (trackId: string) => {
-    setLikedTrackIds(prev => prev.includes(trackId) ? prev.filter(id => id !== trackId) : [...prev, trackId]);
+    const isAdding = !likedTrackIds.includes(trackId);
+    setLikedTrackIds(prev => isAdding ? [...prev, trackId] : prev.filter(id => id !== trackId));
+    showToast(isAdding ? "Added to Liked Songs" : "Removed from Liked Songs");
   };
 
   const createPlaylist = (name: string) => {
@@ -58,31 +70,36 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       trackIds: []
     };
     setPlaylists(prev => [...prev, newPlaylist]);
+    showToast(`Created playlist "${name}"`);
   };
 
   const addTrackToPlaylist = (playlistId: string, trackId: string) => {
-    setPlaylists(prev => prev.map(pl => 
-      pl.id === playlistId && !pl.trackIds.includes(trackId)
-        ? { ...pl, trackIds: [...pl.trackIds, trackId] }
-        : pl
-    ));
+    const playlist = playlists.find(pl => pl.id === playlistId);
+    if (playlist && !playlist.trackIds.includes(trackId)) {
+      setPlaylists(prev => prev.map(pl => 
+        pl.id === playlistId ? { ...pl, trackIds: [...pl.trackIds, trackId] } : pl
+      ));
+      showToast(`Added to "${playlist.name}"`);
+    }
   };
 
   const updatePlaylistName = (playlistId: string, newName: string) => {
     setPlaylists(prev => prev.map(pl => 
       pl.id === playlistId ? { ...pl, name: newName } : pl
     ));
+    showToast("Playlist renamed");
   };
 
   const deletePlaylist = (playlistId: string) => {
     setPlaylists(prev => prev.filter(pl => pl.id !== playlistId));
+    showToast("Playlist deleted");
   };
 
   return (
     <PlayerContext.Provider value={{ 
-      currentTrack, isPlaying, likedTrackIds, playlists, 
-      setCurrentTrack, togglePlay, toggleLike, createPlaylist, addTrackToPlaylist, updatePlaylistName,
-      deletePlaylist
+      currentTrack, isPlaying, likedTrackIds, playlists, toastMessage,
+      setCurrentTrack, togglePlay, toggleLike, createPlaylist, 
+      addTrackToPlaylist, updatePlaylistName, deletePlaylist, showToast, hideToast
     }}>
       {children}
     </PlayerContext.Provider>

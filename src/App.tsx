@@ -7,6 +7,7 @@ import { Search } from './pages/Search/Search';
 import { Library } from './pages/Library/Library';
 import './App.css';
 import { PlaylistDetails } from './pages/PlaylistDetalis/PlaylistDetails';
+import { Toast } from './components/Toast/Toast';
 
 const AppContent = () => {
   const { currentTrack } = usePlayer();
@@ -24,6 +25,7 @@ const AppContent = () => {
           </Routes>
         </div>
         {currentTrack && <Player />}
+        <Toast />
       </div>
     </Router>
   );
