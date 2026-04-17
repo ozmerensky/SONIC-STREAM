@@ -12,7 +12,8 @@ export class SidebarPage {
   readonly mainContent: Locator; 
   readonly pageTitle: Locator;
   readonly searchPageContent: Locator;
-
+  readonly playlistLinks: Locator;
+  
   constructor(page: Page) {
     this.page = page;
     this.sidebar = page.getByTestId('sidebar');
@@ -25,6 +26,7 @@ export class SidebarPage {
     this.mainContent = page.getByTestId('main-content');
     this.pageTitle = this.mainContent.getByRole('heading', { name: 'Sonic Stream' });
     this.searchPageContent = page.getByText('Search Page (Coming Soon)');
+    this.playlistLinks = page.locator('ul[class*="playlistList"] a');
   }
 
   async clickHome() {
