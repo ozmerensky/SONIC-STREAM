@@ -5,7 +5,7 @@
     "artist": "Bullet For My Valentine",
     "albumCover": "https://upload.wikimedia.org/wikipedia/en/3/39/Tears_dont_fall.jpg",
     "duration": "4:40",
-    "audioUrl": "/public/audio/demo.mp3"
+    "audioUrl": "audio/demo.mp3"
   },
   {
     "id": "2",
@@ -13,7 +13,7 @@
     "artist": "Bullet For My Valentine",
     "albumCover": "https://upload.wikimedia.org/wikipedia/en/2/25/Bullet_for_My_Valentine_-_Waking_The_Demon.jpg",
     "duration": "3:50",
-    "audioUrl": "/public/audio/demo.mp3"
+    "audioUrl": "audio/demo.mp3"
   },
   {
     "id": "3",
@@ -21,6 +21,6 @@
     "artist": "Bullet For My Valentine",
     "albumCover": "https://upload.wikimedia.org/wikipedia/en/1/1b/Your_Betrayal_-_Bullet_for_My_Valentine.jpg",
     "duration": "4:51",
-    "audioUrl": "/public/audio/demo.mp3"
+    "audioUrl": "audio/demo.mp3"
   }
 ]
