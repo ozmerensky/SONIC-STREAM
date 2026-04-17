@@ -8,7 +8,8 @@ interface TrackCardProps {
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
-  const { setCurrentTrack } = usePlayer();
+  const { setCurrentTrack, likedTrackIds, toggleLike } = usePlayer();
+  const isLiked = likedTrackIds.includes(track.id);
 
   return (
     <div className={styles.card} data-testid="track-card">
@@ -23,7 +24,19 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
         </button>
       </div>
       <div className={styles.info}>
-        <h3 className={styles.title}>{track.title}</h3>
+        <div className={styles.titleRow}>
+          <h3 className={styles.title}>{track.title}</h3>
+          <button 
+            className={`${styles.likeButton} ${isLiked ? styles.liked : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLike(track.id);
+            }}
+            aria-label={isLiked ? "Remove from liked" : "Add to liked"}
+          >
+            {isLiked ? '♥' : '♡'}
+          </button>
+        </div>
         <p className={styles.artist}>{track.artist}</p>
       </div>
     </div>

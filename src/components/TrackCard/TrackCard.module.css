@@ -62,7 +62,37 @@
   min-height: 62px;
 }
 
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.likeButton:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.likeButton.liked {
+  color: #1ed760; /* ירוק ספוטיפיי */
+}
+
 .title {
+  flex: 1;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
