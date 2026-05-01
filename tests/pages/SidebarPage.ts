@@ -8,12 +8,7 @@ export class SidebarPage {
   readonly searchLink: Locator;
   readonly libraryLink: Locator;
   readonly createPlaylistBtn: Locator;
-  readonly playlistSectionTitle: Locator;
-  readonly mainContent: Locator; 
-  readonly pageTitle: Locator;
-  readonly searchPageContent: Locator;
-  readonly playlistLinks: Locator;
-  
+
   constructor(page: Page) {
     this.page = page;
     this.sidebar = page.getByTestId('sidebar');
@@ -22,18 +17,18 @@ export class SidebarPage {
     this.searchLink = page.getByTestId('nav-item-search');
     this.libraryLink = page.getByTestId('nav-item-your library');
     this.createPlaylistBtn = page.getByRole('button', { name: /create playlist/i });
-    this.playlistSectionTitle = page.getByText('Playlists');
-    this.mainContent = page.getByTestId('main-content');
-    this.pageTitle = this.mainContent.getByRole('heading', { name: 'Sonic Stream' });
-    this.searchPageContent = page.getByText('Search Page (Coming Soon)');
-    this.playlistLinks = page.locator('ul[class*="playlistList"] a');
   }
 
-  async clickHome() {
-    await this.homeLink.click();
+  async navigateTo(item: 'home' | 'search' | 'library') {
+    const nav = {
+      home: this.homeLink,
+      search: this.searchLink,
+      library: this.libraryLink
+    };
+    await nav[item].click();
   }
 
-  async clickSearch() {
-    await this.searchLink.click();
+  getPlaylistLink(name: string) {
+    return this.page.getByRole('link', { name: name, exact: true });
   }
 }

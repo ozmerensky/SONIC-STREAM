@@ -5,21 +5,21 @@ export class PlayerPage {
   readonly playerBar: Locator;
   readonly playButton: Locator;
   readonly trackTitle: Locator;
-  readonly artistName: Locator;
   readonly progressSeekBar: Locator;
   readonly volumeSeekBar: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.playerBar = page.getByTestId('player-bar');
-    this.trackTitle = this.playerBar.locator('[class*="title"]').first(); 
-    this.artistName = this.playerBar.locator('[class*="artist"]').first();
+    this.trackTitle = this.playerBar.locator('[class*="title"]').first();
+    
     this.playButton = this.playerBar.getByTestId('main-play-btn');
-    this.progressSeekBar = this.playerBar.getByLabel(/Music progress/i);
-    this.volumeSeekBar = this.playerBar.getByLabel(/Volume control/i);
+    this.progressSeekBar = this.playerBar.getByLabel(/music progress/i);
+    this.volumeSeekBar = this.playerBar.getByLabel(/volume control/i);
   }
 
   async setProgress(value: string) {
+    await this.progressSeekBar.waitFor({ state: 'visible' });
     await this.progressSeekBar.fill(value);
   }
 

@@ -8,10 +8,12 @@ export class LibraryPage {
   constructor(page: Page) {
     this.page = page;
     this.trackCards = page.getByTestId('track-card');
-    this.emptyMessage = page.getByText('Songs you like will appear here');
+    this.emptyMessage = page.getByText(/songs you like will appear here/i);
   }
 
   async goto() {
     await this.page.goto('/library');
+    await this.page.waitForURL('**/library');
   }
 }
+
