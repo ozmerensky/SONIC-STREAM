@@ -8,12 +8,15 @@ export class SearchPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.searchInput = page.getByPlaceholder(/What do you want to listen to/i);
+    this.searchInput = page.getByPlaceholder(/what do you want to listen to/i);
     this.trackCards = page.getByTestId('track-card');
-    this.noResultsMessage = page.locator('p[class*="noResults"]');
+    this.noResultsMessage = page.getByTestId('no-results-message');
   }
 
   async searchFor(term: string) {
     await this.searchInput.fill(term);
+    await this.page.keyboard.press('Enter');
   }
 }
+
+

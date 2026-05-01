@@ -1,39 +1,43 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class HomePage {
   readonly page: Page;
-  readonly mainContent: Locator;
   readonly pageTitle: Locator;
-  readonly trackGrid: Locator;
+  readonly mainContent: Locator;
   readonly trackCards: Locator;
   readonly skeletons: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.mainContent = page.getByTestId('main-content');
-    
-    this.pageTitle = this.mainContent.getByRole('heading', { name: 'Sonic Stream' });
-    this.trackGrid = this.mainContent.locator('[class*="trackGrid"]');
+    this.pageTitle = this.mainContent.getByRole('heading', { name: /sonic stream/i });
     this.trackCards = this.mainContent.getByTestId('track-card');
-    this.skeletons = page.locator('[class*="skeletonCard"]');
+    this.skeletons = this.mainContent.getByTestId('track-card-skeleton');
   }
 
   async goto() {
     await this.page.goto('/');
   }
 
+  async expectLoaded() {
+    await expect(this.pageTitle).toBeVisible();
+  }
+
   async waitForLoadingToFinish() {
-    await this.page.waitForSelector('[data-testid="track-card"]');
+    if (await this.skeletons.first().isVisible()) {
+      await this.skeletons.first().waitFor({ state: 'hidden' });
+    }
+    await this.trackCards.first().waitFor({ state: 'visible' });
   }
 
   async playTrackByIndex(index: number) {
     const card = this.trackCards.nth(index);
+    await expect(card).toBeVisible();
     await card.getByRole('button', { name: /play/i }).first().click();
   }
 
   async toggleLikeOnTrack(index: number) {
     const card = this.trackCards.nth(index);
-    await card.waitFor({ state: 'visible' });
-    await card.getByRole('button', { name: /liked/i }).click();
+    await card.getByRole('button', { name: /liked|heart/i }).click();
   }
 }

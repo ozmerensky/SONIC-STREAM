@@ -14,4 +14,14 @@ export class PlaylistPage {
     this.trackCards = page.getByTestId('track-card');
     this.deleteBtn = page.getByRole('button', { name: /delete playlist/i });
   }
+  async rename(newName: string) {
+    await this.title.click();
+    await this.nameInput.fill(newName);
+    await this.page.keyboard.press('Enter');
+  }
+
+  async delete() {
+    this.page.once('dialog', dialog => dialog.accept());
+    await this.deleteBtn.click();
+  }
 }

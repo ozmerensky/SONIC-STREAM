@@ -1,38 +1,33 @@
-import { test, expect } from '@playwright/test';
-import { PlayerPage } from './pages/PlayerPage';
-import { HomePage } from './pages/HomePage';
+import { test, expect } from './fixtures';
 
 test.describe('Player Bar Interactions', () => {
-  let player: PlayerPage;
-  let homePage: HomePage;
-
-  test.beforeEach(async ({ page }) => {
-    player = new PlayerPage(page);
-    homePage = new HomePage(page);
+  test.beforeEach(async ({ homePage }) => {
     await homePage.goto();
   });
 
-  test('should not show player initially and show it after selecting a track', async () => {
-    await expect(player.playerBar).not.toBeVisible();
+  test('should not show player initially and show it after selecting a track', async ({ homePage, playerPage }) => {
+    await expect(playerPage.playerBar).not.toBeVisible();
     await homePage.playTrackByIndex(0);
-
-    await expect(player.playerBar).toBeVisible();
-    await expect(player.trackTitle).not.toBeEmpty();
+    await expect(playerPage.playerBar).toBeVisible();
+    await expect(playerPage.trackTitle).not.toBeEmpty();
   });
 
-  test('should update volume value when changed', async () => {
+  test('should update volume value when changed', async ({ homePage, playerPage }) => {
     await homePage.playTrackByIndex(0);
-    
-    await player.setVolume('20');
-    await expect(player.volumeSeekBar).toHaveValue('20');
+    await playerPage.setVolume('20');
+    await expect(playerPage.volumeSeekBar).toHaveValue('20');
   });
 
-  test('should update player state and interact with progress bar', async () => {
-    await homePage.playTrackByIndex(0); 
+  test('should update player state and interact with progress bar', async ({ homePage, playerPage }) => {
+    await test.step('Start playing a track', async () => {
+      await homePage.playTrackByIndex(0);
+      await expect(playerPage.playButton).toHaveAttribute('aria-label', /pause/i);
+    });
 
-    await expect(player.playButton).toHaveAttribute('aria-label', /pause/i);
-
-    await expect(player.progressSeekBar).toBeVisible();
-    await player.progressSeekBar.fill('50');
+    await test.step('Interact with progress bar', async () => {
+      await playerPage.playButton.click();
+      await playerPage.setProgress('50');
+      await expect(playerPage.progressSeekBar).toHaveValue(/49|50|51/);
+    });
   });
 });
