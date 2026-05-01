@@ -19,7 +19,7 @@ export class PlayerPage {
   }
 
   async setProgress(value: string) {
-    await this.progressSeekBar.waitFor({ state: 'visible' });
+    await this.progressSeekBar.focus();
     await this.progressSeekBar.fill(value);
   }
 
