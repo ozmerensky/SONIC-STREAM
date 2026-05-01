@@ -13,7 +13,6 @@ test.describe('Library and Favorites', () => {
     
     await expect(libraryPage.trackCards).toHaveCount(1);
     
-    // הסרה מהלייקים
     await libraryPage.trackCards.first().getByRole('button', { name: /liked/i }).click();
     
     await expect(libraryPage.trackCards).toHaveCount(0);
