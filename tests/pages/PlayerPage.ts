@@ -20,8 +20,14 @@ export class PlayerPage {
 
   async setProgress(value: string) {
     await this.progressSeekBar.focus();
-    await this.progressSeekBar.fill(value);
+    
+    await this.progressSeekBar.evaluate((el: HTMLInputElement, val) => {
+      el.value = val;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }, value);
   }
+
 
   async setVolume(value: string) {
     await this.volumeSeekBar.fill(value);
