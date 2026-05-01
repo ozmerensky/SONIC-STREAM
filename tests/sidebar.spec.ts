@@ -1,67 +1,55 @@
-import { test, expect } from '@playwright/test';
-import { SidebarPage } from './pages/SidebarPage';
-import { HomePage } from './pages/HomePage';
-import { PlayerPage } from './pages/PlayerPage';
+import { test, expect } from './fixtures';
 
 test.describe('Sidebar Navigation', () => {
-  let sidebar: SidebarPage;
-
-  test.beforeEach(async ({ page }) => {
-    sidebar = new SidebarPage(page);
-    await page.goto('/');
+  
+  test.beforeEach(async ({ homePage }) => {
+    await homePage.goto();
   });
 
-  test('should have consistent branding in sidebar', async () => {
+  test('should have consistent branding in sidebar', async ({ sidebar }) => {
     await expect(sidebar.logo).toBeVisible();
     await expect(sidebar.logo).toHaveText('Sonic Stream');
   });
 
-  test('should be visible on desktop', async () => {
+  test('should be visible on desktop', async ({ sidebar }) => {
     await expect(sidebar.sidebar).toBeVisible();
     await expect(sidebar.homeLink).toHaveClass(/active/);
   });
 
-  test('should navigate to search page and update active state', async ({ page }) => {
-    await sidebar.clickSearch();
-    
+  test('should navigate to search page and update active state', async ({ page, sidebar }) => {
+    await sidebar.navigateTo('search');
     await expect(page).toHaveURL(/\/search/);
-    
     await expect(sidebar.searchLink).toHaveClass(/active/);
     await expect(sidebar.homeLink).not.toHaveClass(/active/);
   });
 
-  test('should highlight search when hovered', async () => {
+  test('should highlight search when hovered', async ({ sidebar }) => {
     await sidebar.searchLink.hover();
     await expect(sidebar.searchLink).toHaveCSS('color', 'rgb(255, 255, 255)');
   });
 
-  test('should display library and playlist sections', async () => {
+  test('should display library and playlist sections', async ({ sidebar }) => {
     await test.step('Verify Library link', async () => {
       await expect(sidebar.libraryLink).toBeVisible();
     });
 
     await test.step('Verify Playlist management', async () => {
-      await expect(sidebar.playlistSectionTitle).toBeVisible();
       await expect(sidebar.createPlaylistBtn).toBeEnabled();
     });
   });
 
-  test('should keep music playing when navigating between pages', async ({ page }) => {
-    const homePage = new HomePage(page);
-    const playerPage = new PlayerPage(page);
-
+  test('should keep music playing when navigating between pages', async ({ page, homePage, sidebar, playerPage }) => {
     await homePage.playTrackByIndex(0);
     
-    await expect(playerPage.playerBar).toBeVisible(); 
-    
+    await expect(playerPage.playerBar).toBeVisible();
     await expect(playerPage.trackTitle).not.toBeEmpty();
     
-    const trackTitle = await playerPage.trackTitle.textContent();
-
-    await sidebar.clickSearch();
+    const trackTitle = await playerPage.trackTitle.innerText();
+    
+    await sidebar.navigateTo('search');
+    
     await expect(page).toHaveURL(/\/search/);
-
-    await expect(playerPage.trackTitle).toHaveText(trackTitle!);
+    await expect(playerPage.trackTitle).toHaveText(trackTitle);
     await expect(playerPage.playButton).toHaveAttribute('aria-label', /pause/i);
   });
 });

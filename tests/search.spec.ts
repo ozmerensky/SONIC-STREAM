@@ -1,24 +1,25 @@
-import { test, expect } from '@playwright/test';
-import { SearchPage } from './pages/SearchPage';
-import { SidebarPage } from './pages/SidebarPage';
+import { test, expect } from './fixtures';
 
 test.describe('Search Functionality', () => {
-  test('should filter tracks based on search input', async ({ page }) => {
-    const sidebar = new SidebarPage(page);
-    const searchPage = new SearchPage(page);
+  
+  test.beforeEach(async ({ homePage, sidebar }) => {
+    await homePage.goto();
+    await sidebar.navigateTo('search');
+  });
 
-    await page.goto('/');
-    await sidebar.clickSearch();
-
+  test('should filter tracks based on search input', async ({ searchPage }) => {
     await expect(searchPage.trackCards).toHaveCount(3);
 
-    await searchPage.searchFor('Tears');
-    
-    await expect(searchPage.trackCards).toHaveCount(1);
-    await expect(searchPage.trackCards.first()).toContainText(/Tears Don't Fall/i);
+    await test.step('Search for existing track', async () => {
+      await searchPage.searchFor('Tears');
+      await expect(searchPage.trackCards).toHaveCount(1);
+      await expect(searchPage.trackCards.first()).toContainText(/Tears Don't Fall/i);
+    });
 
-    await searchPage.searchFor('NonExistentSong');
-    await expect(searchPage.trackCards).toHaveCount(0);
-    await expect(searchPage.noResultsMessage).toBeVisible();
+    await test.step('Search for non-existent track', async () => {
+      await searchPage.searchFor('NonExistentSong');
+      await expect(searchPage.trackCards).toHaveCount(0);
+      await expect(searchPage.noResultsMessage).toBeVisible();
+    });
   });
 });
