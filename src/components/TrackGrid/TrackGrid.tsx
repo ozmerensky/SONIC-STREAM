@@ -17,18 +17,18 @@ export const TrackGrid: React.FC<TrackGridProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className={styles.grid}>
+      <div className={styles.grid} data-testid="track-grid">
         {Array.from({ length: 8 }).map((_, n) => <TrackCardSkeleton key={n} />)}
       </div>
     );
   }
 
   if (tracks.length === 0) {
-    return <p className={styles.noResults}>{emptyMessage}</p>;
+    return <p className={styles.noResults} data-testid="no-results-message">{emptyMessage}</p>;
   }
 
   return (
-    <div className={styles.grid}>
+    <div className={styles.grid} data-testid="track-grid">
       {tracks.map((track) => (
         <TrackCard key={track.id} track={track} />
       ))}

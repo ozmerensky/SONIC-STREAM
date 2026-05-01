@@ -3,7 +3,7 @@ import styles from './TrackCardSkeleton.module.css';
 
 export const TrackCardSkeleton: React.FC = () => {
   return (
-    <div className={styles.skeletonCard}>
+    <div className={styles.skeletonCard} data-testid="track-card-skeleton">
       <div className={styles.skeletonImage} />
       <div className={styles.skeletonInfo}>
         <div className={styles.skeletonTitle} />
