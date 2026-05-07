@@ -81,6 +81,7 @@ GitHub Actions validate every change with automated tests. The pipeline ensures:
 - Playwright validation on Node.js 18
 - Regression protection for audio playback and navigation flows
 - No merging of broken UI or failing feature branches
+- CI runs inside the Playwright Docker image `mcr.microsoft.com/playwright:v1.59.1-noble` to match the installed Playwright version and `ubuntu-latest`
 
 ## Important Files
 
