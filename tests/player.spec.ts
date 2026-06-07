@@ -27,7 +27,11 @@ test.describe('Player Bar Interactions', () => {
     await test.step('Interact with progress bar', async () => {
       await playerPage.playButton.click();
       await playerPage.setProgress('50');
-      await expect(playerPage.progressSeekBar).toHaveValue(/49|50|51/);
+
+      await expect.poll(async () => {
+        const value = await playerPage.progressSeekBar.inputValue();
+        return Number(value);
+      }).toBeCloseTo(50, 1);
     });
   });
 });
