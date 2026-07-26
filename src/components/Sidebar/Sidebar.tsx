@@ -2,7 +2,7 @@ import React from 'react';
 import { NavItem } from './NavItem';
 import { usePlayer } from '../../context/PlayerContext';
 import styles from './Sidebar.module.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 export const Sidebar: React.FC = () => {
   const { playlists, createPlaylist } = usePlayer();
