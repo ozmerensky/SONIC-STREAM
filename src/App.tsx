@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import { Sidebar } from './components/Sidebar/Sidebar';
 import { Player } from './components/Player/Player';
 import { PlayerProvider, usePlayer } from './context/PlayerContext';
